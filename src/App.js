@@ -11,10 +11,11 @@ import AuthorsList from "./AuthorsList";
 import AuthorDetail from "./AuthorDetail";
 import Signup from "./SignupForm";
 import Login from "./LoginForm";
-
+import PrivateRoute from "./PrivateRoute";
 class App extends Component {
   componentDidMount() {
     this.props.fetchAllAuthors();
+    this.props.checkToken();
   }
 
   render() {
@@ -28,8 +29,8 @@ class App extends Component {
             <Switch>
               <Route path="/authors/:authorID" component={AuthorDetail} />
               <Route path="/authors" component={AuthorsList} />
-              <Route path="/signup" component={Signup} />
-              <Route path="/login" component={Login} />
+              <PrivateRoute path="/signup" component={Signup} />
+              <PrivateRoute path="/login" component={Login} />
               <Redirect to="/authors" />
             </Switch>
           </div>
@@ -41,7 +42,8 @@ class App extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchAllAuthors: () => dispatch(actionCreators.fetchAuthors())
+    fetchAllAuthors: () => dispatch(actionCreators.fetchAuthors()),
+    checkToken: () => dispatch(actionCreators.checkForExpiredToken())
   };
 };
 
